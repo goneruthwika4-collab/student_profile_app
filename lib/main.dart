@@ -1,173 +1,154 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const StudentProfileApp());
+  runApp(const MyApp());
 }
 
-class StudentProfileApp extends StatelessWidget {
-  const StudentProfileApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Student Profile',
-      home: const StudentProfilePage(),
+      home: const ProfilePage(),
     );
   }
 }
 
-class StudentProfilePage extends StatelessWidget {
-  const StudentProfilePage({super.key});
+class ProfilePage extends StatelessWidget {
+  const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // MediaQuery
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Student Profile'),
+        title: const Text("Student Profile"),
       ),
 
-      body: Center(
-        child: Container(
-          margin: const EdgeInsets.all(20),
-          padding: const EdgeInsets.all(25),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
 
-          decoration: BoxDecoration(
-            border: Border.all(),
-            borderRadius: BorderRadius.circular(20),
-          ),
+          // Breakpoint
+          bool isTablet = constraints.maxWidth >= 600;
 
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-
-              // Student Picture
-              Stack(
-                alignment: Alignment.bottomRight,
-                children: [
-                  const CircleAvatar(
-                    radius: 70,
-                    child: Icon(
-                      Icons.person,
-                      size: 70,
-                    ),
-                  ),
-
-                  const Icon(
-                    Icons.check_circle,
-                    size: 30,
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 20),
-
-              // Student Name
-              const Text(
-                'Ruthwika Gone',
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-
-              const SizedBox(height: 8),
-
-              const Text(
-                'Computer Science Student',
-                style: TextStyle(
-                  fontSize: 18,
-                ),
-              ),
-
-              const SizedBox(height: 25),
-
-              // Student Details
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: const [
-                  Column(
-                    children: [
-                      Icon(Icons.badge),
-                      SizedBox(height: 5),
-                      Text('STU101'),
-                    ],
-                  ),
-
-                  Column(
-                    children: [
-                      Icon(Icons.school),
-                      SizedBox(height: 5),
-                      Text('CSE'),
-                    ],
-                  ),
-
-                  Column(
-                    children: [
-                      Icon(Icons.calendar_today),
-                      SizedBox(height: 5),
-                      Text('3rd Year'),
-                    ],
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 25),
-
-              // Contact Details
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(15),
+          return SingleChildScrollView(
+            child: Center(
+              child: Container(
+                width: isTablet ? width * 0.70 : width * 0.90,
+                padding: EdgeInsets.all(isTablet ? 35 : 20),
+                margin: const EdgeInsets.all(20),
 
                 decoration: BoxDecoration(
                   border: Border.all(),
                   borderRadius: BorderRadius.circular(15),
                 ),
 
-                child: const Column(
+                child: Column(
                   children: [
+
+                    // Profile Image
+                    CircleAvatar(
+                      radius: isTablet ? 90 : 60,
+                      backgroundImage: const NetworkImage(
+                        "https://randomuser.me/api/portraits/women/32.jpg",
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    // Name
+                    Text(
+                      "Ananya Sharma",
+                      style: TextStyle(
+                        fontSize: isTablet ? 30 : 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+
+                    const SizedBox(height: 8),
+
+                    const Text(
+                      "Computer Science Student",
+                      style: TextStyle(fontSize: 18),
+                    ),
+
+                    const SizedBox(height: 25),
+
+                    // Details
                     Row(
                       children: [
-                        Icon(Icons.email),
-                        SizedBox(width: 15),
-                        Text('student@gmail.com'),
+                        Expanded(
+                          child: Column(
+                            children: const [
+                              Icon(Icons.badge, size: 30),
+                              SizedBox(height: 5),
+                              Text("STU101"),
+                            ],
+                          ),
+                        ),
+
+                        Expanded(
+                          child: Column(
+                            children: const [
+                              Icon(Icons.school, size: 30),
+                              SizedBox(height: 5),
+                              Text("CSE"),
+                            ],
+                          ),
+                        ),
+
+                        Expanded(
+                          child: Column(
+                            children: const [
+                              Icon(Icons.location_on, size: 30),
+                              SizedBox(height: 5),
+                              Text("Hyderabad"),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
 
-                    SizedBox(height: 15),
+                    const SizedBox(height: 25),
 
-                    Row(
-                      children: [
-                        Icon(Icons.phone),
-                        SizedBox(width: 15),
-                        Text('9876543210'),
-                      ],
+                    // MediaQuery Output
+                    Text(
+                      "Screen Width: ${width.toInt()}",
+                      style: const TextStyle(fontSize: 16),
                     ),
 
-                    SizedBox(height: 15),
+                    Text(
+                      "Screen Height: ${height.toInt()}",
+                      style: const TextStyle(fontSize: 16),
+                    ),
 
-                    Row(
-                      children: [
-                        Icon(Icons.location_on),
-                        SizedBox(width: 15),
-                        Text('Hyderabad'),
-                      ],
+                    const SizedBox(height: 10),
+
+                    Text(
+                      isTablet ? "Tablet Layout" : "Mobile Layout",
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    ElevatedButton(
+                      onPressed: () {},
+                      child: const Text("View Profile"),
                     ),
                   ],
                 ),
               ),
-
-              const SizedBox(height: 25),
-
-              // Button
-              ElevatedButton.icon(
-                onPressed: () {},
-                icon: const Icon(Icons.edit),
-                label: const Text('Edit Profile'),
-              ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }
