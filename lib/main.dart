@@ -15,299 +15,193 @@ class StudentProfileApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.deepPurple,
         ),
-        useMaterial3: true,
       ),
-      home: const RegistrationPage(),
+      home: const AnimationPage(),
     );
   }
 }
 
-class RegistrationPage extends StatefulWidget {
-  const RegistrationPage({super.key});
+class AnimationPage extends StatefulWidget {
+  const AnimationPage({super.key});
 
   @override
-  State<RegistrationPage> createState() =>
-      _RegistrationPageState();
+  State<AnimationPage> createState() => _AnimationPageState();
 }
 
-class _RegistrationPageState extends State<RegistrationPage> {
-  final _formKey = GlobalKey<FormState>();
-
-  final nameController = TextEditingController();
-  final emailController = TextEditingController();
-  final mobileController = TextEditingController();
-  final passwordController = TextEditingController();
-
-  String? department;
-  String? gender;
-  bool acceptTerms = false;
-
-  @override
-  void dispose() {
-    nameController.dispose();
-    emailController.dispose();
-    mobileController.dispose();
-    passwordController.dispose();
-    super.dispose();
-  }
+class _AnimationPageState extends State<AnimationPage> {
+  bool expanded = false;
+  bool visible = true;
+  bool moved = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Student Registration'),
+        title: const Text('Student Profile Animations'),
         backgroundColor: Colors.deepPurple,
         foregroundColor: Colors.white,
         centerTitle: true,
       ),
 
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            const SizedBox(height: 20),
 
-        child: Form(
-          key: _formKey,
-
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Center(
-                child: Icon(
-                  Icons.school,
-                  size: 65,
-                  color: Colors.deepPurple,
-                ),
+            const Text(
+              'My Student Profile',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.deepPurple,
               ),
+            ),
 
-              const SizedBox(height: 10),
+            const SizedBox(height: 20),
 
-              const Center(
-                child: Text(
-                  'Student Registration Form',
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
+            // Fade Animation
+            AnimatedOpacity(
+              opacity: visible ? 1.0 : 0.1,
+              duration: const Duration(seconds: 1),
+              child: const Column(
+                children: [
+                  CircleAvatar(
+                    radius: 40,
+                    backgroundColor: Colors.deepPurple,
+                    child: Icon(
+                      Icons.person,
+                      size: 50,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-              ),
-
-              const SizedBox(height: 25),
-
-              // Name field
-              TextFormField(
-                controller: nameController,
-                decoration: const InputDecoration(
-                  labelText: 'Full Name',
-                  prefixIcon: Icon(Icons.person),
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'Please enter your name';
-                  }
-                  return null;
-                },
-              ),
-
-              const SizedBox(height: 18),
-
-              // Email field
-              TextFormField(
-                controller: emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                  prefixIcon: Icon(Icons.email),
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'Please enter your email';
-                  }
-                  if (!RegExp(
-                    r'^[^@\s]+@[^@\s]+\.[^@\s]+$',
-                  ).hasMatch(value.trim())) {
-                    return 'Please enter a valid email';
-                  }
-                  return null;
-                },
-              ),
-
-              const SizedBox(height: 18),
-
-              // Mobile number field
-              TextFormField(
-                controller: mobileController,
-                keyboardType: TextInputType.phone,
-                maxLength: 10,
-                decoration: const InputDecoration(
-                  labelText: 'Mobile Number',
-                  prefixIcon: Icon(Icons.phone),
-                  border: OutlineInputBorder(),
-                  counterText: '',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter mobile number';
-                  }
-                  if (!RegExp(r'^[0-9]{10}$').hasMatch(value)) {
-                    return 'Enter a valid 10-digit number';
-                  }
-                  return null;
-                },
-              ),
-
-              const SizedBox(height: 18),
-
-              // Password field
-              TextFormField(
-                controller: passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: 'Password',
-                  prefixIcon: Icon(Icons.lock),
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter password';
-                  }
-                  if (value.length < 6) {
-                    return 'Password must be 6 characters minimum';
-                  }
-                  return null;
-                },
-              ),
-
-              const SizedBox(height: 18),
-
-              // Department dropdown
-              DropdownButtonFormField<String>(
-                decoration: const InputDecoration(
-                  labelText: 'Department',
-                  prefixIcon: Icon(Icons.school),
-                  border: OutlineInputBorder(),
-                ),
-                value: department,
-                items: const [
-                  DropdownMenuItem(
-                    value: 'CSE',
-                    child: Text('CSE'),
+                  SizedBox(height: 10),
+                  Text(
+                    'Ruthwika G',
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  DropdownMenuItem(
-                    value: 'IT',
-                    child: Text('IT'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'ECE',
-                    child: Text('ECE'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'EEE',
-                    child: Text('EEE'),
-                  ),
+                  Text('Computer Science Engineering'),
                 ],
-                onChanged: (value) {
-                  setState(() {
-                    department = value;
-                  });
-                },
-                validator: (value) {
-                  if (value == null) {
-                    return 'Please select department';
-                  }
-                  return null;
-                },
               ),
+            ),
 
-              const SizedBox(height: 12),
+            const SizedBox(height: 15),
 
-              const Text(
-                'Gender',
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  visible = !visible;
+                });
+              },
+              child: const Text('Fade In / Fade Out'),
+            ),
+
+            const Divider(height: 35),
+
+            // AnimatedContainer
+            const Text(
+              'Animated Container',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
+            const SizedBox(height: 15),
+
+            AnimatedContainer(
+              duration: const Duration(seconds: 1),
+              curve: Curves.easeInOut,
+              width: expanded ? 200 : 110,
+              height: expanded ? 110 : 80,
+              decoration: BoxDecoration(
+                color: expanded ? Colors.green : Colors.blue,
+                borderRadius: BorderRadius.circular(
+                  expanded ? 30 : 10,
+                ),
+              ),
+              alignment: Alignment.center,
+              child: const Text(
+                'Student',
                 style: TextStyle(
-                  fontSize: 16,
+                  color: Colors.white,
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
+            ),
 
-              RadioListTile<String>(
-                title: const Text('Female'),
-                value: 'Female',
-                groupValue: gender,
-                onChanged: (value) {
-                  setState(() {
-                    gender = value;
-                  });
-                },
+            const SizedBox(height: 10),
+
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  expanded = !expanded;
+                });
+              },
+              child: const Text('Change Size and Color'),
+            ),
+
+            const Divider(height: 35),
+
+            // Slide Animation
+            const Text(
+              'Slide Animation',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
               ),
+            ),
 
-              RadioListTile<String>(
-                title: const Text('Male'),
-                value: 'Male',
-                groupValue: gender,
-                onChanged: (value) {
-                  setState(() {
-                    gender = value;
-                  });
-                },
-              ),
+            const SizedBox(height: 15),
 
-              if (gender == null)
-                const Padding(
-                  padding: EdgeInsets.only(left: 12),
-                  child: Text(
-                    'Please select gender',
-                    style: TextStyle(color: Colors.red),
-                  ),
-                ),
+            SizedBox(
+              height: 100,
+              width: double.infinity,
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final maxLeft = constraints.maxWidth - 80;
 
-              CheckboxListTile(
-                contentPadding: EdgeInsets.zero,
-                title: const Text('I accept the terms'),
-                value: acceptTerms,
-                onChanged: (value) {
-                  setState(() {
-                    acceptTerms = value ?? false;
-                  });
-                },
-                controlAffinity: ListTileControlAffinity.leading,
-              ),
-
-              const SizedBox(height: 20),
-
-              // Submit button
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    final isValid =
-                        _formKey.currentState!.validate();
-
-                    if (!isValid ||
-                        gender == null ||
-                        !acceptTerms) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text(
-                            'Please correct all errors and complete the form',
+                  return Stack(
+                    children: [
+                      AnimatedPositioned(
+                        duration: const Duration(seconds: 1),
+                        curve: Curves.easeInOut,
+                        left: moved ? maxLeft : 0,
+                        top: 5,
+                        child: Container(
+                          width: 70,
+                          height: 70,
+                          decoration: BoxDecoration(
+                            color: Colors.orange,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: const Icon(
+                            Icons.school,
+                            color: Colors.white,
+                            size: 40,
                           ),
                         ),
-                      );
-                      return;
-                    }
-
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          'Student registered successfully!',
-                        ),
                       ),
-                    );
-                  },
-                  child: const Text('Register'),
-                ),
+                    ],
+                  );
+                },
               ),
-            ],
-          ),
+            ),
+
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  moved = !moved;
+                });
+              },
+              child: const Text('Slide Left / Right'),
+            ),
+
+            const SizedBox(height: 25),
+          ],
         ),
       ),
     );
