@@ -27,7 +27,7 @@ What I Did:
 
 Screenshot:
 
-"Experiment 1" (screenshots/experiment1.png)
+"Experiment 1" (screenshot/experiment1.png)
 
 Experiment 2: Basic Flutter UI Widgets
 
@@ -41,7 +41,7 @@ What I Did:
 
 Screenshot:
 
-"Experiment 2" ![Experiment 2](./screenshots/experiment%202.png)
+"Experiment 2" ![Experiment 2](./screenshot/experiment%202.png)
 
 Experiment 3: Responsive UI Design
 
@@ -55,7 +55,7 @@ What I Did:
 
 Screenshot:
 
-"Experiment 3" ![Experiment 3](./screenshots/experiment%203.png)
+"Experiment 3" ![Experiment 3](./screenshot/experiment%203.png)
 
 Experiment 4: Navigation Between Screens
 
@@ -69,7 +69,7 @@ What I Did:
 
 Screenshot:
 
-"Experiment 4" ![Experiment 4](./screenshots/experiment%204.png)
+"Experiment 4" ![Experiment 4](./screenshot/experiment%204.png)
 
 Experiment 5: State Management
 
@@ -83,7 +83,7 @@ What I Did:
 
 Screenshot:
 
-"Experiment 5" ![Experiment 5](./screenshots/experiment%205.png)
+"Experiment 5" ![Experiment 5](./screenshot/experiment%205.png)
 
 Experiment 6: Custom Widgets and Themes
 
@@ -97,7 +97,7 @@ What I Did:
 
 Screenshot:
 
-"Experiment 6" ![Experiment 6](./screenshots/experiment%206.png)
+"Experiment 6" ![Experiment 6](./screenshot/experiment%206.png)
 
 Experiment 7: Form Validation
 
@@ -111,7 +111,7 @@ What I Did:
 
 Screenshot:
 
-"Experiment 7" ![Experiment 7](./screenshots/experiment%207.png)
+"Experiment 7" ![Experiment 7](./screenshot/experiment%207.png)
 
 Experiment 8: Flutter Animations
 
@@ -124,7 +124,7 @@ What I Did:
 
 Screenshot:
 
-"Experiment 8" ![Experiment 8](./screenshots/experiment%208.png)
+"Experiment 8" ![Experiment 8](./screenshot/experiment%208.png)
 
 Experiment 9: REST API Integration
 
@@ -139,7 +139,7 @@ What I Did:
 
 Screenshot:
 
-"Experiment 9" ![Experiment 9](./screenshots/experiment%209.png)
+"Experiment 9" ![Experiment 9](./screenshot/experiment%209.png)
 
 Experiment 10: Testing, Debugging, and Application Integration
 
