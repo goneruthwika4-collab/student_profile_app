@@ -158,7 +158,7 @@ flutter test
 
 Screenshot:
 
-"Experiment 10" ![Experiment 10](./screenshort/experiment%2010.png)
+"Experiment 10" ![Experiment 10](./screenshort/experiment%2010.png)s
 
 How to Run the Project
 
