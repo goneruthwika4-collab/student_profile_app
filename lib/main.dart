@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(
-    const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: StudentProfileApp(),
-    ),
-  );
+  runApp(const StudentProfileApp());
 }
 
 class StudentProfileApp extends StatelessWidget {
@@ -14,86 +9,164 @@ class StudentProfileApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Student Profile'),
-        backgroundColor: Colors.deepPurple,
-        foregroundColor: Colors.white,
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const CircleAvatar(
-              radius: 40,
-              backgroundColor: Colors.deepPurple,
-              child: Icon(
-                Icons.person,
-                size: 50,
-                color: Colors.white,
-              ),
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Ruthwika G',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 10),
-            const Text('Computer Science Engineering'),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const ProfilePage(),
-                  ),
-                );
-              },
-              child: const Text('View Profile'),
-            ),
-          ],
-        ),
-      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Student Profile',
+      home: const StudentProfilePage(),
     );
   }
 }
 
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+class StudentProfilePage extends StatelessWidget {
+  const StudentProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Profile'),
-        backgroundColor: Colors.deepPurple,
-        foregroundColor: Colors.white,
+        title: const Text('Student Profile'),
       ),
-      body: const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.person,
-              size: 80,
-              color: Colors.deepPurple,
-            ),
-            SizedBox(height: 20),
-            Text(
-              'Ruthwika G',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+
+      body: Center(
+        child: Container(
+          margin: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(25),
+
+          decoration: BoxDecoration(
+            border: Border.all(),
+            borderRadius: BorderRadius.circular(20),
+          ),
+
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+
+              // Student Picture
+              Stack(
+                alignment: Alignment.bottomRight,
+                children: [
+                  const CircleAvatar(
+                    radius: 70,
+                    child: Icon(
+                      Icons.person,
+                      size: 70,
+                    ),
+                  ),
+
+                  const Icon(
+                    Icons.check_circle,
+                    size: 30,
+                  ),
+                ],
               ),
-            ),
-            SizedBox(height: 10),
-            Text('Computer Science Engineering'),
-            SizedBox(height: 10),
-            Text('Welcome to my profile!'),
-          ],
+
+              const SizedBox(height: 20),
+
+              // Student Name
+              const Text(
+                'Ruthwika Gone',
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+
+              const SizedBox(height: 8),
+
+              const Text(
+                'Computer Science Student',
+                style: TextStyle(
+                  fontSize: 18,
+                ),
+              ),
+
+              const SizedBox(height: 25),
+
+              // Student Details
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: const [
+                  Column(
+                    children: [
+                      Icon(Icons.badge),
+                      SizedBox(height: 5),
+                      Text('STU101'),
+                    ],
+                  ),
+
+                  Column(
+                    children: [
+                      Icon(Icons.school),
+                      SizedBox(height: 5),
+                      Text('CSE'),
+                    ],
+                  ),
+
+                  Column(
+                    children: [
+                      Icon(Icons.calendar_today),
+                      SizedBox(height: 5),
+                      Text('3rd Year'),
+                    ],
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 25),
+
+              // Contact Details
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(15),
+
+                decoration: BoxDecoration(
+                  border: Border.all(),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+
+                child: const Column(
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.email),
+                        SizedBox(width: 15),
+                        Text('student@gmail.com'),
+                      ],
+                    ),
+
+                    SizedBox(height: 15),
+
+                    Row(
+                      children: [
+                        Icon(Icons.phone),
+                        SizedBox(width: 15),
+                        Text('9876543210'),
+                      ],
+                    ),
+
+                    SizedBox(height: 15),
+
+                    Row(
+                      children: [
+                        Icon(Icons.location_on),
+                        SizedBox(width: 15),
+                        Text('Hyderabad'),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 25),
+
+              // Button
+              ElevatedButton.icon(
+                onPressed: () {},
+                icon: const Icon(Icons.edit),
+                label: const Text('Edit Profile'),
+              ),
+            ],
+          ),
         ),
       ),
     );
