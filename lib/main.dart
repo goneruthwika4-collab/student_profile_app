@@ -1,67 +1,154 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const StudentApp());
+  runApp(const StudentProfileApp());
 }
 
-class StudentApp extends StatelessWidget {
-  const StudentApp({super.key});
+// Main application with theme
+class StudentProfileApp extends StatelessWidget {
+  const StudentProfileApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Student Profile',
+      title: 'Student Profile App',
 
-      routes: {
-        '/details': (context) => const StudentDetailsPage(),
-      },
+      // Applying ThemeData
+      theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.deepPurple,
+        ),
+        scaffoldBackgroundColor: const Color(0xFFF5F3FA),
 
-      home: const StudentProfilePage(),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.deepPurple,
+          foregroundColor: Colors.white,
+          centerTitle: true,
+        ),
+
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.deepPurple,
+            foregroundColor: Colors.white,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 25,
+              vertical: 14,
+            ),
+          ),
+        ),
+      ),
+
+      home: const HomePage(),
     );
   }
 }
 
-// --------------------------------------------------
-// STUDENT PROFILE PAGE
-// --------------------------------------------------
+// Custom reusable Student Card
+class StudentCard extends StatelessWidget {
+  final String name;
+  final String rollNo;
+  final String department;
+  final String year;
 
-class StudentProfilePage extends StatefulWidget {
-  const StudentProfilePage({super.key});
+  const StudentCard({
+    super.key,
+    required this.name,
+    required this.rollNo,
+    required this.department,
+    required this.year,
+  });
 
   @override
-  State<StudentProfilePage> createState() =>
-      _StudentProfilePageState();
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 5,
+      margin: const EdgeInsets.all(16),
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            const CircleAvatar(
+              radius: 45,
+              backgroundColor: Colors.deepPurple,
+              child: Icon(
+                Icons.person,
+                size: 55,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 15),
+
+            Text(
+              name,
+              style: const TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.deepPurple,
+              ),
+            ),
+
+            const SizedBox(height: 15),
+            const Divider(),
+
+            ListTile(
+              leading: const Icon(
+                Icons.badge,
+                color: Colors.deepPurple,
+              ),
+              title: const Text('Roll Number'),
+              subtitle: Text(rollNo),
+            ),
+
+            ListTile(
+              leading: const Icon(
+                Icons.school,
+                color: Colors.deepPurple,
+              ),
+              title: const Text('Department'),
+              subtitle: Text(department),
+            ),
+
+            ListTile(
+              leading: const Icon(
+                Icons.calendar_month,
+                color: Colors.deepPurple,
+              ),
+              title: const Text('Academic Year'),
+              subtitle: Text(year),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
-class _StudentProfilePageState extends State<StudentProfilePage> {
+// Custom reusable Button Widget
+class CustomButton extends StatelessWidget {
+  final String buttonText;
+  final VoidCallback onPressed;
 
-  // Student information
-  String studentName = 'Gone Ruthwika';
-  String course = 'Computer Science Student';
-  String department = 'CSE';
+  const CustomButton({
+    super.key,
+    required this.buttonText,
+    required this.onPressed,
+  });
 
-  // State variable
-  bool isUpdated = false;
-
-  // Update / Restore profile
-  void updateProfile() {
-    setState(() {
-      if (isUpdated) {
-        // Normal profile
-        studentName = 'Gone Ruthwika';
-        course = 'Computer Science Student';
-        department = 'CSE';
-        isUpdated = false;
-      } else {
-        // Updated profile
-        studentName = 'Ruthwika';
-        course = 'Senior Computer Science Student';
-        department = 'Computer Science';
-        isUpdated = true;
-      }
-    });
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton.icon(
+      onPressed: onPressed,
+      icon: const Icon(Icons.check_circle),
+      label: Text(buttonText),
+    );
   }
+}
+
+// Home Page
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -71,270 +158,43 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
       ),
 
       body: SingleChildScrollView(
-        child: Center(
-          child: Container(
-            margin: const EdgeInsets.all(20),
-            padding: const EdgeInsets.all(25),
-            decoration: BoxDecoration(
-              border: Border.all(),
-              borderRadius: BorderRadius.circular(20),
+        child: Column(
+          children: [
+            const SizedBox(height: 15),
+
+            const Text(
+              'My Profile',
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: Colors.deepPurple,
+              ),
             ),
 
-            child: Column(
-              children: [
-
-                // Profile Picture
-                const CircleAvatar(
-                  radius: 70,
-                  child: Icon(
-                    Icons.person,
-                    size: 70,
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-
-                // Student Name
-                Text(
-                  studentName,
-                  style: const TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-
-                const SizedBox(height: 8),
-
-                // Course
-                Text(
-                  course,
-                  style: const TextStyle(
-                    fontSize: 18,
-                  ),
-                ),
-
-                const SizedBox(height: 25),
-
-                // Student ID
-                const Row(
-                  children: [
-                    Icon(Icons.badge),
-                    SizedBox(width: 15),
-                    Text(
-                      'Student ID: STU101',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                  ],
-                ),
-
-                const SizedBox(height: 15),
-
-                // Email
-                const Row(
-                  children: [
-                    Icon(Icons.email),
-                    SizedBox(width: 15),
-                    Text(
-                      'Email: ruthwika@gmail.com',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                  ],
-                ),
-
-                const SizedBox(height: 15),
-
-                // Phone
-                const Row(
-                  children: [
-                    Icon(Icons.phone),
-                    SizedBox(width: 15),
-                    Text(
-                      'Phone: 9876543210',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                  ],
-                ),
-
-                const SizedBox(height: 15),
-
-                // Department
-                Row(
-                  children: [
-                    const Icon(Icons.school),
-                    const SizedBox(width: 15),
-                    Text(
-                      'Department: $department',
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  ],
-                ),
-
-                const SizedBox(height: 30),
-
-                // Update / Restore Button
-                ElevatedButton.icon(
-                  onPressed: updateProfile,
-                  icon: Icon(
-                    isUpdated ? Icons.restore : Icons.edit,
-                  ),
-                  label: Text(
-                    isUpdated
-                        ? 'Restore Profile'
-                        : 'Update Profile',
-                  ),
-                ),
-
-                const SizedBox(height: 15),
-
-                // View Details
-                ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => StudentDetailsPage(
-                          name: studentName,
-                          course: course,
-                          department: department,
-                        ),
-                      ),
-                    );
-                  },
-                  icon: const Icon(Icons.arrow_forward),
-                  label: const Text('View Details'),
-                ),
-
-                const SizedBox(height: 15),
-
-                // Named Route
-                ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      '/details',
-                    );
-                  },
-                  icon: const Icon(Icons.open_in_new),
-                  label: const Text('Open Named Route'),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-// --------------------------------------------------
-// STUDENT DETAILS PAGE
-// --------------------------------------------------
-
-class StudentDetailsPage extends StatelessWidget {
-  final String name;
-  final String course;
-  final String department;
-
-  const StudentDetailsPage({
-    super.key,
-    this.name = 'Ananya Sharma',
-    this.course = 'Computer Science Student',
-    this.department = 'CSE',
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Student Details'),
-      ),
-
-      body: Center(
-        child: SingleChildScrollView(
-          child: Container(
-            margin: const EdgeInsets.all(20),
-            padding: const EdgeInsets.all(25),
-            decoration: BoxDecoration(
-              border: Border.all(),
-              borderRadius: BorderRadius.circular(20),
+            const StudentCard(
+              name: 'Ruthwika G',
+              rollNo: '24AG1A0582',
+              department: 'Computer Science Engineering',
+              year: '3rd Year',
             ),
 
-            child: Column(
-              children: [
+            const SizedBox(height: 10),
 
-                const CircleAvatar(
-                  radius: 60,
-                  child: Icon(
-                    Icons.person,
-                    size: 60,
+            CustomButton(
+              buttonText: 'View Profile',
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text(
+                      'Student profile displayed successfully!',
+                    ),
                   ),
-                ),
-
-                const SizedBox(height: 20),
-
-                const Text(
-                  'Student Details',
-                  style: TextStyle(
-                    fontSize: 26,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-
-                const SizedBox(height: 25),
-
-                Text(
-                  'Name: $name',
-                  style: const TextStyle(fontSize: 18),
-                ),
-
-                const SizedBox(height: 12),
-
-                const Text(
-                  'Student ID: STU101',
-                  style: TextStyle(fontSize: 18),
-                ),
-
-                const SizedBox(height: 12),
-
-                Text(
-                  'Department: $department',
-                  style: const TextStyle(fontSize: 18),
-                ),
-
-                const SizedBox(height: 12),
-
-                Text(
-                  'Course: $course',
-                  style: const TextStyle(fontSize: 18),
-                ),
-
-                const SizedBox(height: 12),
-
-                const Text(
-                  'Email: student@gmail.com',
-                  style: TextStyle(fontSize: 18),
-                ),
-
-                const SizedBox(height: 12),
-
-                const Text(
-                  'Phone: 9876543210',
-                  style: TextStyle(fontSize: 18),
-                ),
-
-                const SizedBox(height: 30),
-
-                // Back Button
-                ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: const Icon(Icons.arrow_back),
-                  label: const Text('Back to Profile'),
-                ),
-              ],
+                );
+              },
             ),
-          ),
+
+            const SizedBox(height: 25),
+          ],
         ),
       ),
     );
