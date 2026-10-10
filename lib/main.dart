@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const StudentProfileApp());
@@ -11,198 +13,148 @@ class StudentProfileApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      title: 'Student Profile App',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.deepPurple,
         ),
+        useMaterial3: true,
       ),
-      home: const AnimationPage(),
+      home: const StudentListPage(),
     );
   }
 }
 
-class AnimationPage extends StatefulWidget {
-  const AnimationPage({super.key});
+class StudentListPage extends StatefulWidget {
+  const StudentListPage({super.key});
 
   @override
-  State<AnimationPage> createState() => _AnimationPageState();
+  State<StudentListPage> createState() => _StudentListPageState();
 }
 
-class _AnimationPageState extends State<AnimationPage> {
-  bool expanded = false;
-  bool visible = true;
-  bool moved = false;
+class _StudentListPageState extends State<StudentListPage> {
+  late Future<List<dynamic>> studentsFuture;
+
+  // Fetch data from REST API
+  Future<List<dynamic>> fetchStudents() async {
+    final response = await http.get(
+      Uri.parse('https://jsonplaceholder.typicode.com/users'),
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body) as List<dynamic>;
+    } else {
+      throw Exception('Failed to load student data');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    studentsFuture = fetchStudents();
+  }
+
+  // Retry if the API request fails
+  void retryLoading() {
+    setState(() {
+      studentsFuture = fetchStudents();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Student Profile Animations'),
+        title: const Text('Student Profiles'),
         backgroundColor: Colors.deepPurple,
         foregroundColor: Colors.white,
         centerTitle: true,
       ),
 
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(height: 20),
+      body: FutureBuilder<List<dynamic>>(
+        future: studentsFuture,
+        builder: (context, snapshot) {
+          // Loading state
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
 
-            const Text(
-              'My Student Profile',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.deepPurple,
-              ),
-            ),
-
-            const SizedBox(height: 20),
-
-            // Fade Animation
-            AnimatedOpacity(
-              opacity: visible ? 1.0 : 0.1,
-              duration: const Duration(seconds: 1),
-              child: const Column(
+          // Error state
+          if (snapshot.hasError) {
+            return Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  CircleAvatar(
-                    radius: 40,
+                  const Icon(
+                    Icons.error_outline,
+                    size: 50,
+                    color: Colors.red,
+                  ),
+                  const SizedBox(height: 10),
+                  const Text('Unable to fetch data'),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: retryLoading,
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
+            );
+          }
+
+          final students = snapshot.data ?? [];
+
+          if (students.isEmpty) {
+            return const Center(
+              child: Text('No student data available'),
+            );
+          }
+
+          // Display fetched JSON data
+          return ListView.builder(
+            itemCount: students.length,
+            itemBuilder: (context, index) {
+              final student = students[index];
+
+              return Card(
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 7,
+                ),
+                elevation: 3,
+                child: ListTile(
+                  leading: CircleAvatar(
                     backgroundColor: Colors.deepPurple,
-                    child: Icon(
-                      Icons.person,
-                      size: 50,
-                      color: Colors.white,
+                    foregroundColor: Colors.white,
+                    child: Text(
+                      student['id'].toString(),
                     ),
                   ),
-                  SizedBox(height: 10),
-                  Text(
-                    'Ruthwika G',
-                    style: TextStyle(
-                      fontSize: 22,
+                  title: Text(
+                    student['name'] ?? 'No name',
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Text('Computer Science Engineering'),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 15),
-
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  visible = !visible;
-                });
-              },
-              child: const Text('Fade In / Fade Out'),
-            ),
-
-            const Divider(height: 35),
-
-            // AnimatedContainer
-            const Text(
-              'Animated Container',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-
-            const SizedBox(height: 15),
-
-            AnimatedContainer(
-              duration: const Duration(seconds: 1),
-              curve: Curves.easeInOut,
-              width: expanded ? 200 : 110,
-              height: expanded ? 110 : 80,
-              decoration: BoxDecoration(
-                color: expanded ? Colors.green : Colors.blue,
-                borderRadius: BorderRadius.circular(
-                  expanded ? 30 : 10,
-                ),
-              ),
-              alignment: Alignment.center,
-              child: const Text(
-                'Student',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 10),
-
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  expanded = !expanded;
-                });
-              },
-              child: const Text('Change Size and Color'),
-            ),
-
-            const Divider(height: 35),
-
-            // Slide Animation
-            const Text(
-              'Slide Animation',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-
-            const SizedBox(height: 15),
-
-            SizedBox(
-              height: 100,
-              width: double.infinity,
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  final maxLeft = constraints.maxWidth - 80;
-
-                  return Stack(
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      AnimatedPositioned(
-                        duration: const Duration(seconds: 1),
-                        curve: Curves.easeInOut,
-                        left: moved ? maxLeft : 0,
-                        top: 5,
-                        child: Container(
-                          width: 70,
-                          height: 70,
-                          decoration: BoxDecoration(
-                            color: Colors.orange,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: const Icon(
-                            Icons.school,
-                            color: Colors.white,
-                            size: 40,
-                          ),
-                        ),
+                      const SizedBox(height: 5),
+                      Text('Email: ${student['email'] ?? 'N/A'}'),
+                      Text('Phone: ${student['phone'] ?? 'N/A'}'),
+                      Text(
+                        'Company: ${student['company']?['name'] ?? 'N/A'}',
                       ),
                     ],
-                  );
-                },
-              ),
-            ),
-
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  moved = !moved;
-                });
-              },
-              child: const Text('Slide Left / Right'),
-            ),
-
-            const SizedBox(height: 25),
-          ],
-        ),
+                  ),
+                  isThreeLine: true,
+                ),
+              );
+            },
+          );
+        },
       ),
     );
   }
